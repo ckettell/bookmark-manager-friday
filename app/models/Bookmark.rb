@@ -1,4 +1,5 @@
 require 'pg'
+require_relative 'database_connection'
 
 class Bookmark
 
@@ -14,11 +15,11 @@ class Bookmark
     @id = id
     @title = title
     @url = url
-  end
+  end #
 
   def self.list
-    result = @connection.exec("SELECT * FROM bookmarks;")
-    result.map do |bookmark|
+    result = DatabaseConnection.query("SELECT * FROM bookmarks")
+      result.map do |bookmark|
       Bookmark.new(id: bookmark['id'], title: bookmark['title'], url: bookmark['url'])
     end
   end

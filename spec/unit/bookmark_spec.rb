@@ -20,21 +20,26 @@ describe Bookmark do
   describe ".create" do
     context "when a user adds a bookmark" do
       it "saves it to the database" do
-        bookmark = Bookmark.create(url: 'www.cockandballs.com', title: 'Chicken Tennis')
+        bookmark = Bookmark.create(url: 'https://www.cockandballs.com', title: 'Chicken Tennis')
         persisted_data = persisted_data(id: bookmark.id)
 
         expect(bookmark).to be_a Bookmark
         expect(bookmark.id).to eq persisted_data['id']
-        expect(bookmark.url).to eq 'www.cockandballs.com'
+        expect(bookmark.url).to eq 'https://www.cockandballs.com'
         expect(bookmark.title).to eq 'Chicken Tennis'
       end
+    end
+
+    it "does not create a new bookmark if the URL is not valid" do
+      Bookmark.create(url: 'not a real bookmark', title: 'not a real bookmark')
+      expect(Bookmark.list).not_to include 'not a real bookmark'
     end
   end
 
   describe ".delete" do
     context "when a user deletes a bookmark" do
       it "deletes it from the database" do
-        bookmark = Bookmark.create(url: 'httlps://www.google.com', title: 'Google')
+        bookmark = Bookmark.create(url: 'https://www.google.com', title: 'Google')
         Bookmark.delete(id: bookmark.id)
         expect(Bookmark.list).to be_empty
       end

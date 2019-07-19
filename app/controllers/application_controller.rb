@@ -29,11 +29,6 @@ class ApplicationManager < Sinatra::Base
     redirect '/bookmarks'
   end
 
-  # post '/bookmarks' do
-  #   flash[:notice] = "You must submit a valid URL." unless Bookmark.create(url: params[:url], title: params[:title])
-  #   redirect('/bookmarks')
-  # end
-
   delete '/bookmarks/:id' do
     Bookmark.delete(id: params[:id])
     redirect '/bookmarks'
@@ -49,7 +44,25 @@ class ApplicationManager < Sinatra::Base
     redirect ('/bookmarks')
   end
 
+  get '/bookmarks/:id/comments/new' do
+    @bookmark_id = params[:id]
+    erb :'comments/new'
+  end
+
+  post '/bookmarks/:id/comments' do
+    Comment.create(text: params[:comment], bookmark_id: params[:id])
+    redirect '/bookmarks'
+  end
+
+  get '/users/new' do
+    erb :'users/new'
+  end
+
+  get '/users' do
+    User.create(email: params[:email], password: params[:password])
+    redirect '/bookmarks'
+  end
+
   run! if app_file == $0
 
 end
-#hi
